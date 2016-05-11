@@ -2,3 +2,4 @@
 *.zip
 vendor/
 .idea/
+test.php

@@ -1,9 +1,9 @@
-#Thinkery REAXML Parser for PHP
+#Thinkery ReaXML Parser for PHP
 
 This is a simple set of classes to parse a ReaXML formatted XML file into usable PHP objects.
 
 ## Installation
-composer require thinkerytim/thinkreaxmlparser
+composer require thinkerytim/ThinkReaXMLParser
 
 ##Usage
     require_once('vendor/autoload.php');
