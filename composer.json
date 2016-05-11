@@ -1,0 +1,27 @@
+{
+  "name": "thinkerytim/ThinkReaXMLParser",
+  "description": "PHP Parser Class for REA XML",
+  "license": "GNU GPL v3",
+  "keywords": [
+    "reaxml", "rea", "real estate", "php"
+  ],
+  "authors": [
+    {
+      "name": "Tim Kramer",
+      "email": "tim@thethinkery.net",
+      "homepage": "http://www.thethinkery.net"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "nesbot/carbon": "^1.21"
+  },
+  "autoload": {
+    "psr-0": {
+      "ThinkReaXMLParser": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.3"
+  }
+}
