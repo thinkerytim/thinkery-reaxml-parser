@@ -9,36 +9,19 @@ abstract class Listing
     protected $unique_id;
     protected $type;
     protected $category;
-    protected $stype;
-    protected $stype_freq;
+    protected $payment_freq;
     protected $listing_office;
-    protected $street_num;
-    protected $street;
-    protected $street2;
-    protected $apt;
     protected $title;
-    protected $alias;
-    protected $hide_address;
-    protected $show_map;
     protected $short_description;
     protected $description;
     protected $terms;
     protected $agent_notes;
-    protected $subdivision;
-    protected $city;
-    protected $locstate;
-    protected $province;
-    protected $postcode;
-    protected $region;
-    protected $county;
-    protected $country;
     protected $latitude;
     protected $longitude;
     protected $kml;
     protected $gbase_address;
     protected $concat_address;
     protected $price;
-    protected $price2;
     protected $call_for_price;
     protected $beds;
     protected $baths;
@@ -67,6 +50,7 @@ abstract class Listing
     protected $reo;
     protected $vtour;
     protected $video;
+    protected $status;
     protected $featured;
     protected $available;
     protected $created;
@@ -79,8 +63,11 @@ abstract class Listing
     /* @var Media $media */
     protected $media;
 
+    protected $details = [];
+
     public function __construct(\SimpleXMLElement $xml)
     {
+        $this->setStatus((string) $xml->attributes()->status);
         $this->setUniqueId((string) $xml->uniqueID);
         $this->setTitle((string) $xml->headline);
         $this->setDescription((string) $xml->description);
@@ -92,6 +79,23 @@ abstract class Listing
         $this->setCategory((string) $xml->category->attributes()->name);
         $this->setPrice((string) $xml->price);
         $this->setCallForPrice((string) $xml->price->attributes()->display);
+        //$this->setDetails($xml);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 
     /**
@@ -147,37 +151,17 @@ abstract class Listing
     /**
      * @return mixed
      */
-    public function getStype()
+    public function getPaymentFreq()
     {
-        return $this->stype;
+        return $this->payment_freq;
     }
 
     /**
-     * @param mixed $stype
-     * @return Listing
+     * @param mixed $payment_freq
      */
-    public function setStype($stype)
+    public function setPaymentFreq($payment_freq)
     {
-        $this->stype = $stype;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStypeFreq()
-    {
-        return $this->stype_freq;
-    }
-
-    /**
-     * @param mixed $stype_freq
-     * @return Listing
-     */
-    public function setStypeFreq($stype_freq)
-    {
-        $this->stype_freq = $stype_freq;
-        return $this;
+        $this->payment_freq = $payment_freq;
     }
 
     /**
@@ -201,78 +185,6 @@ abstract class Listing
     /**
      * @return mixed
      */
-    public function getStreetNum()
-    {
-        return $this->street_num;
-    }
-
-    /**
-     * @param mixed $street_num
-     * @return Listing
-     */
-    public function setStreetNum($street_num)
-    {
-        $this->street_num = $street_num;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStreet()
-    {
-        return $this->street;
-    }
-
-    /**
-     * @param mixed $street
-     * @return Listing
-     */
-    public function setStreet($street)
-    {
-        $this->street = $street;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStreet2()
-    {
-        return $this->street2;
-    }
-
-    /**
-     * @param mixed $street2
-     * @return Listing
-     */
-    public function setStreet2($street2)
-    {
-        $this->street2 = $street2;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getApt()
-    {
-        return $this->apt;
-    }
-
-    /**
-     * @param mixed $apt
-     * @return Listing
-     */
-    public function setApt($apt)
-    {
-        $this->apt = $apt;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getTitle()
     {
         return $this->title;
@@ -285,60 +197,6 @@ abstract class Listing
     public function setTitle($title)
     {
         $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
-
-    /**
-     * @param mixed $alias
-     * @return Listing
-     */
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getHideAddress()
-    {
-        return $this->hide_address;
-    }
-
-    /**
-     * @param mixed $hide_address
-     * @return Listing
-     */
-    public function setHideAddress($hide_address)
-    {
-        $this->hide_address = $hide_address;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getShowMap()
-    {
-        return $this->show_map;
-    }
-
-    /**
-     * @param mixed $show_map
-     * @return Listing
-     */
-    public function setShowMap($show_map)
-    {
-        $this->show_map = $show_map;
         return $this;
     }
 
@@ -411,150 +269,6 @@ abstract class Listing
     public function setAgentNotes($agent_notes)
     {
         $this->agent_notes = $agent_notes;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSubdivision()
-    {
-        return $this->subdivision;
-    }
-
-    /**
-     * @param mixed $subdivision
-     * @return Listing
-     */
-    public function setSubdivision($subdivision)
-    {
-        $this->subdivision = $subdivision;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    /**
-     * @param mixed $city
-     * @return Listing
-     */
-    public function setCity($city)
-    {
-        $this->city = $city;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLocstate()
-    {
-        return $this->locstate;
-    }
-
-    /**
-     * @param mixed $locstate
-     * @return Listing
-     */
-    public function setLocstate($locstate)
-    {
-        $this->locstate = $locstate;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProvince()
-    {
-        return $this->province;
-    }
-
-    /**
-     * @param mixed $province
-     * @return Listing
-     */
-    public function setProvince($province)
-    {
-        $this->province = $province;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPostcode()
-    {
-        return $this->postcode;
-    }
-
-    /**
-     * @param mixed $postcode
-     * @return Listing
-     */
-    public function setPostcode($postcode)
-    {
-        $this->postcode = $postcode;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRegion()
-    {
-        return $this->region;
-    }
-
-    /**
-     * @param mixed $region
-     * @return Listing
-     */
-    public function setRegion($region)
-    {
-        $this->region = $region;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCounty()
-    {
-        return $this->county;
-    }
-
-    /**
-     * @param mixed $county
-     * @return Listing
-     */
-    public function setCounty($county)
-    {
-        $this->county = $county;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
-     * @param mixed $country
-     * @return Listing
-     */
-    public function setCountry($country)
-    {
-        $this->country = $country;
         return $this;
     }
 
