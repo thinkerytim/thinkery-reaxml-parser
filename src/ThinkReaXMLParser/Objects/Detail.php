@@ -2,16 +2,17 @@
 
 namespace ThinkReaXMLParser\Objects;
 
-use Carbon\Carbon;
-
 class Detail
 {
     protected $type;
     protected $name;
     protected $value;
 
-    public function __construct(\SimpleXMLElement $detail)
+    public function __construct($type, $name, $value)
     {
+        $this->setType($type);
+        $this->setName($name);
+        $this->setValue($value);
     }
 
     /**

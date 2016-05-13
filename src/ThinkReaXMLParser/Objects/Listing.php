@@ -3,6 +3,8 @@
 namespace ThinkReaXMLParser\Objects;
 
 use Carbon\Carbon;
+use ThinkReaXMLParser\Objects\InspectionTime;
+use SimpleXMLElement;
 
 abstract class Listing
 {
@@ -15,17 +17,8 @@ abstract class Listing
     protected $short_description;
     protected $description;
     protected $terms;
-    protected $agent_notes;
-    protected $latitude;
-    protected $longitude;
-    protected $kml;
-    protected $gbase_address;
-    protected $concat_address;
     protected $price;
     protected $call_for_price;
-    protected $beds;
-    protected $baths;
-    protected $reception;
     protected $total_units;
     protected $tax;
     protected $income;
@@ -33,16 +26,8 @@ abstract class Listing
     protected $lotsize;
     protected $lot_acres;
     protected $yearbuilt;
-    protected $heat;
-    protected $cool;
-    protected $fuel;
-    protected $garage_type;
-    protected $garage_size;
-    protected $zoning;
-    protected $frontage;
-    protected $siding;
-    protected $roof;
-    protected $propview;
+
+    protected $propview = [];
     protected $school_district;
     protected $lot_type;
     protected $style;
@@ -55,6 +40,7 @@ abstract class Listing
     protected $available;
     protected $created;
     protected $modified;
+    protected $features = [];
 
     /* @var ListingAgent $agent */
     protected $agent;
@@ -62,10 +48,21 @@ abstract class Listing
     protected $address;
     /* @var Media $media */
     protected $media;
+    protected $inspection_times = [];
+    protected $feature_groups = [
+        'features',
+        'otherFeatures',
+        'allowances',
+        'ecoFriendly',
+        'idealFor',
+        'ruralFeatures',
+        'soldDetails',
+        'landDetails',
+        'buildingDetails',
+        'vendorDetails',
+    ];
 
-    protected $details = [];
-
-    public function __construct(\SimpleXMLElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->setStatus((string) $xml->attributes()->status);
         $this->setUniqueId((string) $xml->uniqueID);
@@ -79,7 +76,8 @@ abstract class Listing
         $this->setCategory((string) $xml->category->attributes()->name);
         $this->setPrice((string) $xml->price);
         $this->setCallForPrice((string) $xml->price->attributes()->display);
-        //$this->setDetails($xml);
+        $this->setPropview($xml->views);
+        $this->setFeatures($xml);
     }
 
     /**
@@ -768,12 +766,16 @@ abstract class Listing
     }
 
     /**
-     * @param mixed $propview
+     * @param SimpleXMLElement $propview
      * @return Listing
      */
     public function setPropview($propview)
     {
-        $this->propview = $propview;
+        $views = $propview->children();
+        /* @var SimpleXMLElement $view */
+        foreach ($views as $view) {
+            $this->propview[$view->getName()] = (string) $view;
+        }
         return $this;
     }
 
@@ -984,7 +986,7 @@ abstract class Listing
     }
 
     /**
-     * @param \SimpleXMLElement $agent
+     * @param SimpleXMLElement $agent
      * @param string $agent_id
      * @return Listing
      */
@@ -1003,7 +1005,7 @@ abstract class Listing
     }
 
     /**
-     * @param \SimpleXMLElement $address
+     * @param SimpleXMLElement $address
      * @return Listing
      */
     public function setAddress($address)
@@ -1021,7 +1023,7 @@ abstract class Listing
     }
 
     /**
-     * @param \SimpleXMLElement $objects
+     * @param SimpleXMLElement $objects
      * @return Listing
      */
     public function setMedia($objects)
@@ -1029,4 +1031,45 @@ abstract class Listing
         $this->media = new Media($objects);
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getFeatures()
+    {
+        return $this->features;
+    }
+
+    /**
+     * @param SimpleXMLElement $xml
+     */
+    public function setFeatures($xml)
+    {
+        foreach ($this->feature_groups as $feature_group) {
+            $children = $xml->{$feature_group}->children();
+            foreach ($children as $feature) {
+                /* @var SimpleXMLElement $feature */
+                $this->features[] = new Detail($feature_group, $feature->getName(), (string) $feature);
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getInspectionTimes()
+    {
+        return $this->inspection_times;
+    }
+
+    /**
+     * @param SimpleXMLElement $inspection_times
+     */
+    public function setInspectionTimes($inspection_times)
+    {
+        foreach ($inspection_times as $inspection_time) {
+            $this->inspection_times[] = new InpectionTime((string) $inspection_time);
+        }
+    }
+
 }

@@ -3,6 +3,8 @@
 namespace ThinkReaXMLParser;
 
 use DOMDocument;
+use ThinkReaXMLParser\Exceptions\FailedToParseFileException;
+use ThinkReaXMLParser\Exceptions\InvalidFileException;
 use ThinkReaXMLParser\Objects\CommercialListing;
 use ThinkReaXMLParser\Objects\HolidayRentalListing;
 use ThinkReaXMLParser\Objects\LandListing;
@@ -24,7 +26,7 @@ class Parser
     public function __construct($file)
     {
         if (!is_file($file)) {
-            throw new \Exception("Invalid file");
+            throw new InvalidFileException("Invalid file: ".$file);
         }
 
         $this->file = $file;
@@ -32,12 +34,12 @@ class Parser
 
     /**
      * @return array
-     * @throws \Exception
+     * @throws FailedToParseFileException
      */
     public function parse()
     {
         /*
-         * XML Feed schema and information from http://reaxml.realestate.com.au/propertyList.dtd
+         * ReaXML Feed schema and information from http://reaxml.realestate.com.au/propertyList.dtd
          * and http://reaxml.realestate.com.au/docs/reaxml1-xml-format.html
          */
         $property_classes = ["commercial", "land", "rental", "holidayRental", "residential", "rural"];
@@ -47,7 +49,7 @@ class Parser
         try {
             $xmlreader->open($this->file);
         } catch (\Exception $e) {
-            throw new \Exception("Failed to parse XML");
+            throw new FailedToParseFileException("Failed to parse file at ".$this->file);
         }
         while ($xmlreader->read()) {
             if ($xmlreader->nodeType == XMLReader::ELEMENT and in_array($xmlreader->localName, $property_classes)) {
