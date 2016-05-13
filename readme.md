@@ -22,7 +22,8 @@ composer require thinkerytim/ThinkReaXMLParser
 This software is released under the Apache v2.0 License:
 http://www.apache.org/licenses/LICENSE-2.0
 
-##Copyright (c) 2016 by The Thinkery LLC
+Copyright (c) 2016 by The Thinkery LLC
+
 Web: www.thethinkery.net
 
 Email: info@thethinkery.net
