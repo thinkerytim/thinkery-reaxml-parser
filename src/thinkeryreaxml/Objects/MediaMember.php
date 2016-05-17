@@ -9,6 +9,7 @@ class MediaMember implements MediaObject
     protected $url;
     protected $data;
     protected $filename;
+    protected $filetype;
     protected $ordering;
     protected $modified;
 
@@ -19,6 +20,7 @@ class MediaMember implements MediaObject
         $this->setFileName((string) $object->attributes()->file);
         $this->setOrdering((string) $object->attributes()->id);
         $this->setModified((string) $object->attributes()->modTime);
+        $this->setFiletype((string) $object->attributes()->format);
     }
 
     public function setURL($url)
@@ -41,7 +43,7 @@ class MediaMember implements MediaObject
 
     public function setOrdering($ordering)
     {
-        $this->ordering = $ordering;
+        $this->ordering = (int) $ordering;
         return $this;
     }
 
@@ -92,5 +94,21 @@ class MediaMember implements MediaObject
     public function getModified()
     {
         return $this->modified;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFiletype()
+    {
+        return $this->filetype;
+    }
+
+    /**
+     * @param mixed $filetype
+     */
+    public function setFiletype($filetype)
+    {
+        $this->filetype = $filetype;
     }
 }
