@@ -3,7 +3,6 @@
 namespace ThinkReaXMLParser\Objects;
 
 use Carbon\Carbon;
-use ThinkReaXMLParser\Objects\InspectionTime;
 use SimpleXMLElement;
 
 abstract class Listing
@@ -26,7 +25,7 @@ abstract class Listing
     protected $lotsize;
     protected $lot_acres;
     protected $yearbuilt;
-
+    protected $energy_rating;
     protected $propview = [];
     protected $school_district;
     protected $lot_type;
@@ -782,24 +781,6 @@ abstract class Listing
     /**
      * @return mixed
      */
-    public function getSchoolDistrict()
-    {
-        return $this->school_district;
-    }
-
-    /**
-     * @param mixed $school_district
-     * @return Listing
-     */
-    public function setSchoolDistrict($school_district)
-    {
-        $this->school_district = $school_district;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getLotType()
     {
         return $this->lot_type;
@@ -830,60 +811,6 @@ abstract class Listing
     public function setStyle($style)
     {
         $this->style = $style;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getHoa()
-    {
-        return $this->hoa;
-    }
-
-    /**
-     * @param mixed $hoa
-     * @return Listing
-     */
-    public function setHoa($hoa)
-    {
-        $this->hoa = $hoa;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getReo()
-    {
-        return $this->reo;
-    }
-
-    /**
-     * @param mixed $reo
-     * @return Listing
-     */
-    public function setReo($reo)
-    {
-        $this->reo = $reo;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getVtour()
-    {
-        return $this->vtour;
-    }
-
-    /**
-     * @param mixed $vtour
-     * @return Listing
-     */
-    public function setVtour($vtour)
-    {
-        $this->vtour = $vtour;
         return $this;
     }
 
@@ -1068,7 +995,7 @@ abstract class Listing
     public function setInspectionTimes($inspection_times)
     {
         foreach ($inspection_times as $inspection_time) {
-            $this->inspection_times[] = new InpectionTime((string) $inspection_time);
+            $this->inspection_times[] = new InspectionTime((string) $inspection_time);
         }
     }
 

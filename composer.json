@@ -1,7 +1,7 @@
 {
-  "name": "thinkerytim/ThinkReaXMLParser",
+  "name": "thinkerytim/thinkery-reaxml-parser",
   "description": "PHP Parser Class for REA XML",
-  "license": "GNU GPL v3",
+  "license": "Apache v2.0 License",
   "keywords": [
     "reaxml", "rea", "real estate", "php"
   ],
@@ -17,8 +17,8 @@
     "nesbot/carbon": "^1.21"
   },
   "autoload": {
-    "psr-0": {
-      "ThinkReaXMLParser": "src/"
+    "psr-4": {
+      "ThinkReaXMLParser\\": "src/thinkeryreaxml"
     }
   },
   "require-dev": {
