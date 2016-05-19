@@ -1,6 +1,6 @@
 <?php
 
-namespace ThinkReaXMLParser\Objects;
+namespace ThinkReaXMLParser\Objects\Listings;
 
 class ResidentialListing extends Listing
 {
@@ -9,6 +9,5 @@ class ResidentialListing extends Listing
     {
         // set the property type
         $this->setType('residential');
-        
     }
 }

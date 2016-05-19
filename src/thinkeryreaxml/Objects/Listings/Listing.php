@@ -1,6 +1,6 @@
 <?php
 
-namespace ThinkReaXMLParser\Objects;
+namespace ThinkReaXMLParser\Objects\Listings;
 
 use Carbon\Carbon;
 use SimpleXMLElement;
@@ -30,9 +30,6 @@ abstract class Listing
     protected $school_district;
     protected $lot_type;
     protected $style;
-    protected $hoa;
-    protected $reo;
-    protected $vtour;
     protected $video;
     protected $status;
     protected $featured;
@@ -633,8 +630,13 @@ abstract class Listing
         foreach ($this->feature_groups as $feature_group) {
             $children = $xml->{$feature_group}->children();
             foreach ($children as $feature) {
+                $temp_context = [];
+                $attributes = $feature->attributes();
+                foreach ($attributes as $attribute => $value) {
+                    $temp_context[$attribute] = $value;
+                }
                 /* @var SimpleXMLElement $feature */
-                $this->features[] = new Detail($feature_group, $feature->getName(), (string) $feature);
+                $this->features[] = new Detail($feature_group, $feature->getName(), (string) $feature, $temp_context);
             }
         }
     }

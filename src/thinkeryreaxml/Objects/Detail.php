@@ -7,12 +7,21 @@ class Detail
     protected $type;
     protected $name;
     protected $value;
+    protected $context;
 
-    public function __construct($type, $name, $value)
+    /**
+     * Detail constructor.
+     * @param $type
+     * @param $name
+     * @param $value
+     * @param $context
+     */
+    public function __construct($type, $name, $value, $context)
     {
         $this->setType($type);
         $this->setName($name);
         $this->setValue($value);
+        $this->setContext($context);
     }
 
     /**
@@ -62,5 +71,20 @@ class Detail
     {
         $this->value = $value;
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
+     * @param mixed $context
+     */
+    public function setContext($context)
+    {
+        $this->context = $context;
+    }
 }

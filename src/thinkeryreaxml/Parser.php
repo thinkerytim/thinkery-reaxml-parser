@@ -42,7 +42,7 @@ class Parser
          * ReaXML Feed schema and information from http://reaxml.realestate.com.au/propertyList.dtd
          * and http://reaxml.realestate.com.au/docs/reaxml1-xml-format.html
          */
-        $property_classes = ["commercial", "land", "rental", "holidayRental", "residential", "rural"];
+        $property_classes = ["business", "commercial", "commercialLand", "land", "rental", "holidayRental", "residential", "rural"];
         $results = [];
 
         $xmlreader = new XMLReader();
@@ -60,21 +60,35 @@ class Parser
                 $xml = simplexml_import_dom($n);
 
                 switch ($xmlreader->localName) {
+                    // business
+                    case 'business':
+                        $parser = BusinessListing::class;
+                        break;
+                    // commercial
                     case 'commercial':
                         $parser = CommercialListing::class;
                         break;
+                    // commercial land
+                    case 'commercialLand':
+                        $parser = CommercialLandListing::class;
+                        break;
+                    // residential land
                     case 'land':
                         $parser = LandListing::class;
                         break;
+                    // rental
                     case 'rental':
                         $parser = RentalListing::class;
                         break;
+                    // holiday rental
                     case 'holidayRental':
                         $parser = HolidayRentalListing::class;
                         break;
+                    // residential
                     case 'residential':
                         $parser = ResidentialListing::class;
                         break;
+                    // rural
                     case 'rural':
                         $parser = RuralListing::class;
                         break;

@@ -1,6 +1,6 @@
 <?php
 
-namespace ThinkReaXMLParser\Objects;
+namespace ThinkReaXMLParser\Objects\Listings;
 
 use SimpleXMLElement;
 
