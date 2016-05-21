@@ -1,0 +1,51 @@
+<business modTime="2009-01-01-12:30:00" status="current">
+    <agentID>XNWXNW</agentID>
+    <uniqueID>ABCD1234</uniqueID>
+    <exclusivity value="exclusive"/>
+    <commercialListingType value="sale"/>
+    <underOffer value="no"/>
+    <listingAgent>
+        <name>Mr. John Doe</name>
+        <telephone type="BH">05 1234 5678</telephone>
+        <email>jdoe@somedomain.com.au</email>
+    </listingAgent>
+    <price display="yes" >200000</price>
+    <priceView>To suit buyers 100K+ </priceView>
+    <businessLease period="week">2000</businessLease>
+    <takings>120000</takings>
+    <return period="annual" unit="percent">10.34</return>
+    <currentLeaseEndDate>2009-01-10 12:30:00</currentLeaseEndDate>
+    <furtherOptions>Some text up to 65K characters</furtherOptions>
+    <address display="yes">
+        <streetNumber>39</streetNumber>
+        <street>Main Road</street>
+        <suburb display="yes">RICHMOND</suburb>
+        <state>vic</state>
+        <postcode>3121</postcode>
+        <country>AUS</country>
+    </address>
+    <municipality>YARRA</municipality>
+    <streetDirectory type="melways">
+        <page>44</page>
+        <reference>G7</reference>
+    </streetDirectory>
+    <businessCategory id="1">
+        <name>Automotive</name>
+        <businessSubCategory>
+            <name>Panel Beating</name>
+        </businessSubCategory>
+    </businessCategory>
+    <headline>SHOW STOPPER!!!</headline>
+    <description>Don't pass up an opportunity like this! First to inspect will buy! Close to local amenities and schools. Features lavishly appointed bathrooms, modern kitchen, rustic outhouse.</description>
+    <vendorDetails>
+        <name>Mr. John Doe</name>
+        <telephone type="BH">05 1234 5678</telephone>
+    </vendorDetails>
+    <externalLink href="http://www.realestate.com.au/"/>
+    <objects>
+        <img id="m" modTime="2009-01-01-12:30:00" url="http://www.realestate.com.au/tmp/imageM.jpg" format="jpg"/>
+        <img id="a" modTime="2009-01-01-12:30:00" url="http://www.realestate.com.au/tmp/imageA.jpg" format="jpg"/>
+        <floorplan id="1" modTime="2009-01-01-12:30:00" url="http://www.realestate.com.au/tmp/floorplan1.gif" format="gif"/>
+        <floorplan id="2" modTime="2009-01-01-12:30:00" url="http://www.realestate.com.au/tmp/floorplan2.gif" format="gif"/>
+    </objects>
+</business>

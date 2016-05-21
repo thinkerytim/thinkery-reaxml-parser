@@ -4,6 +4,11 @@ namespace ThinkReaXMLParser\Objects\Listings;
 
 use Carbon\Carbon;
 use SimpleXMLElement;
+use ThinkReaXMLParser\Objects\Address;
+use ThinkReaXMLParser\Objects\Detail;
+use ThinkReaXMLParser\Objects\InspectionTime;
+use ThinkReaXMLParser\Objects\ListingAgent;
+use ThinkReaXMLParser\Objects\Media;
 
 abstract class Listing
 {
@@ -17,7 +22,7 @@ abstract class Listing
     protected $description;
     protected $terms;
     protected $price;
-    protected $call_for_price;
+    protected $display_price;
     protected $total_units;
     protected $tax;
     protected $income;
@@ -64,15 +69,19 @@ abstract class Listing
         $this->setUniqueId((string) $xml->uniqueID);
         $this->setTitle((string) $xml->headline);
         $this->setDescription((string) $xml->description);
-        $this->setAvailable((string) $xml->dateAvailable);
         $this->setAddress($xml->address);
         $this->setAgent($xml->listingAgent, (string) $xml->agentID);
         $this->setMedia($xml->objects);
+        // for backwards compatibility, look for images too
+        if ($xml->images) {
+            $this->setMedia($xml->images);
+        }
         $this->setVideo((string) $xml->videoLink);
-        $this->setCategory((string) $xml->category->attributes()->name);
-        $this->setPrice((string) $xml->price);
-        $this->setCallForPrice((string) $xml->price->attributes()->display);
-        $this->setPropview($xml->views);
+        $this->setPrice((int) $xml->price);
+        $this->setDisplayPrice((string) $xml->price->attributes()->display);
+        if ($xml->views) {
+            $this->setPropview($xml->views);
+        }
         $this->setFeatures($xml);
     }
 
@@ -269,19 +278,19 @@ abstract class Listing
     /**
      * @return mixed
      */
-    public function getCallForPrice()
+    public function getDisplayPrice()
     {
-        return $this->call_for_price;
+        return $this->display_price;
     }
 
     /**
-     * @param mixed $call_for_price
+     * @param mixed $display_price
      * @return Listing
      */
-    public function setCallForPrice($call_for_price)
+    public function setDisplayPrice($display_price)
     {
-        $display = filter_var($call_for_price, FILTER_VALIDATE_BOOLEAN, ['default' => true]);
-        $this->call_for_price = $display;
+        $display = filter_var($display_price, FILTER_VALIDATE_BOOLEAN, ['default' => true]);
+        $this->display_price = $display;
         return $this;
     }
 
@@ -519,7 +528,7 @@ abstract class Listing
      */
     public function setAvailable($available)
     {
-        $this->available = Carbon::createFromFormat('Y-m-d', $available);
+        $this->available = new Carbon($available);
         return $this;
     }
 
@@ -628,15 +637,17 @@ abstract class Listing
     public function setFeatures($xml)
     {
         foreach ($this->feature_groups as $feature_group) {
-            $children = $xml->{$feature_group}->children();
-            foreach ($children as $feature) {
-                $temp_context = [];
-                $attributes = $feature->attributes();
-                foreach ($attributes as $attribute => $value) {
-                    $temp_context[$attribute] = $value;
+            if ($xml->{$feature_group}) {
+                $children = $xml->{$feature_group}->children();
+                foreach ($children as $feature) {
+                    $temp_context = [];
+                    $attributes = $feature->attributes();
+                    foreach ($attributes as $attribute => $value) {
+                        $temp_context[$attribute] = $value;
+                    }
+                    /* @var SimpleXMLElement $feature */
+                    $this->features[] = new Detail($feature_group, $feature->getName(), (string) $feature, $temp_context);
                 }
-                /* @var SimpleXMLElement $feature */
-                $this->features[] = new Detail($feature_group, $feature->getName(), (string) $feature, $temp_context);
             }
         }
     }

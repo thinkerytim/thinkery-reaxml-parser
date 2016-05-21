@@ -9,5 +9,6 @@ class ResidentialListing extends Listing
     {
         // set the property type
         $this->setType('residential');
+        $this->setCategory((string) $xml->category->attributes()->name);
     }
 }
