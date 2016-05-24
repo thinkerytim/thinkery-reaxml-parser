@@ -5,13 +5,13 @@ namespace ThinkReaXMLParser;
 use DOMDocument;
 use ThinkReaXMLParser\Exceptions\FailedToParseFileException;
 use ThinkReaXMLParser\Exceptions\InvalidFileException;
-use ThinkReaXMLParser\Objects\CommercialListing;
-use ThinkReaXMLParser\Objects\HolidayRentalListing;
-use ThinkReaXMLParser\Objects\LandListing;
-use ThinkReaXMLParser\Objects\Listing;
-use ThinkReaXMLParser\Objects\RentalListing;
-use ThinkReaXMLParser\Objects\ResidentialListing;
-use ThinkReaXMLParser\Objects\RuralListing;
+use ThinkReaXMLParser\Objects\Listings\CommercialListing;
+use ThinkReaXMLParser\Objects\Listings\HolidayRentalListing;
+use ThinkReaXMLParser\Objects\Listings\LandListing;
+use ThinkReaXMLParser\Objects\Listings\Listing;
+use ThinkReaXMLParser\Objects\Listings\RentalListing;
+use ThinkReaXMLParser\Objects\Listings\ResidentialListing;
+use ThinkReaXMLParser\Objects\Listings\RuralListing;
 use XMLReader;
 
 class Parser

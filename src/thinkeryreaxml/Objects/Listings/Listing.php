@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use SimpleXMLElement;
 use ThinkReaXMLParser\Objects\Address;
 use ThinkReaXMLParser\Objects\Detail;
+use ThinkReaXMLParser\Objects\ImageObject;
 use ThinkReaXMLParser\Objects\InspectionTime;
 use ThinkReaXMLParser\Objects\ListingAgent;
 use ThinkReaXMLParser\Objects\Media;
@@ -14,6 +15,7 @@ abstract class Listing
 {
     protected $unique_id;
     protected $type;
+    protected $sale_type;
     protected $category;
     protected $payment_freq;
     protected $listing_office;
@@ -22,6 +24,7 @@ abstract class Listing
     protected $description;
     protected $terms;
     protected $price;
+    protected $price_view;
     protected $display_price;
     protected $total_units;
     protected $tax;
@@ -65,19 +68,21 @@ abstract class Listing
 
     public function __construct(SimpleXMLElement $xml)
     {
+        $this->setModified((string) $xml->attributes()->modTime);
         $this->setStatus((string) $xml->attributes()->status);
         $this->setUniqueId((string) $xml->uniqueID);
         $this->setTitle((string) $xml->headline);
         $this->setDescription((string) $xml->description);
-        $this->setAddress($xml->address);
-        $this->setAgent($xml->listingAgent, (string) $xml->agentID);
-        $this->setMedia($xml->objects);
-        // for backwards compatibility, look for images too
-        if ($xml->images) {
-            $this->setMedia($xml->images);
+        if ($xml->address) {
+            $this->setAddress($xml->address);
         }
+        if ($xml->agent) {
+            $this->setAgent($xml->listingAgent, (string) $xml->agentID);
+        }
+        $this->setMedia($xml);
         $this->setVideo((string) $xml->videoLink);
         $this->setPrice((int) $xml->price);
+        $this->setPriceView((string) $xml->priceView);
         $this->setDisplayPrice((string) $xml->price->attributes()->display);
         if ($xml->views) {
             $this->setPropview($xml->views);
@@ -133,6 +138,22 @@ abstract class Listing
     {
         $this->type = $type;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSaleType()
+    {
+        return $this->sale_type;
+    }
+
+    /**
+     * @param mixed $sale_type
+     */
+    public function setSaleType($sale_type)
+    {
+        $this->sale_type = $sale_type;
     }
 
     /**
@@ -273,6 +294,22 @@ abstract class Listing
     {
         $this->price = $price;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriceView()
+    {
+        return $this->price_view;
+    }
+
+    /**
+     * @param mixed $price_view
+     */
+    public function setPriceView($price_view)
+    {
+        $this->price_view = $price_view;
     }
 
     /**
@@ -564,7 +601,7 @@ abstract class Listing
      */
     public function setModified($modified)
     {
-        $this->modified = $modified;
+        $this->modified = Carbon::createFromFormat('Y-m-d-H:i:s', $modified);
         return $this;
     }
 

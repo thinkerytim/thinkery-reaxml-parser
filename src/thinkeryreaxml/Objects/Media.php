@@ -10,9 +10,25 @@ class Media
     protected $images = [];
     protected $floorplans = [];
 
-    public function __construct(\SimpleXMLElement $objects)
+    public function __construct(\SimpleXMLElement $xml)
     {
-        foreach ($objects->children() as $object) {
+        $temp_objects = [];
+
+        $objects = $xml->objects->children();
+
+        foreach ($objects as $object) {
+            $temp_objects[] = $object;
+        }
+
+        // backwards compatibility for older feeds-- look for images node too
+        if ($xml->images) {
+            $images = $xml->images->children();
+            foreach ($images as $image) {
+                $temp_objects[] = $image;
+            }
+        }
+
+        foreach ($temp_objects as $object) {
             $this->processMedia($object);
         }
     }

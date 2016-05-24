@@ -2,12 +2,13 @@
 
 namespace ThinkReaXMLParser\Objects\Listings;
 
+use SimpleXMLElement;
+
 class ResidentialListing extends Listing
 {
-
-    public function import(\SimpleXMLElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
-        // set the property type
+        parent::__construct($xml);
         $this->setType('residential');
         $this->setCategory((string) $xml->category->attributes()->name);
     }

@@ -11,5 +11,7 @@ class BusinessListing extends Listing
         parent::__construct($xml);
         $this->setCategory((string) $xml->businessCategory->name);
         $this->setAvailable((string) $xml->currentLeaseEndDate);
+        $this->setSaleType((string) $xml->commercialListingType->attributes()->value);
+        $this->setIncome((int) $xml->takings);
     }
 }
