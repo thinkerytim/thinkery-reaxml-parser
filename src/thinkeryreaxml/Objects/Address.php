@@ -11,6 +11,7 @@ class Address
     protected $streetNumber;
     protected $street;
     protected $suburb;
+    protected $municipality;
     protected $state;
     protected $region;
     protected $postcode;
@@ -32,6 +33,8 @@ class Address
         $this->setStreet((string) $address->street);
         // set suburb
         $this->setSuburb((string) $address->suburb);
+        // set municipality
+        $this->setMunicipality((string) $address->municipality);
         // set state
         $this->setState((string) $address->state);
         // set region
@@ -166,6 +169,34 @@ class Address
     public function setSuburb($suburb)
     {
         $this->suburb = $suburb;
+        return $this;
+    }
+    
+        /**
+     * @param mixed $street
+     * @return Address
+     */
+    public function setStreet($street)
+    {
+        $this->street = $street;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMunicipality()
+    {
+        return $this->municipality;
+    }
+
+    /**
+     * @param mixed $municipality
+     * @return Address
+     */
+    public function setMunicipality($municipality)
+    {
+        $this->municipality = $municipality;
         return $this;
     }
 
