@@ -34,7 +34,7 @@ class Address
         // set suburb
         $this->setSuburb((string) $address->suburb);
         // set municipality
-        $this->setMunicipality((string) $address->municipality);
+        $this->setMunicipality($municipality);
         // set state
         $this->setState((string) $address->state);
         // set region
