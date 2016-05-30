@@ -34,7 +34,7 @@ class Address
         // set suburb
         $this->setSuburb((string) $address->suburb);
         // set municipality
-        $this->setMunicipality($municipality);
+        $this->setMunicipality((string) $address->municipality);
         // set state
         $this->setState((string) $address->state);
         // set region
@@ -179,6 +179,7 @@ class Address
     {
         return $this->municipality;
     }
+
     /**
      * @param mixed $municipality
      * @return Address
