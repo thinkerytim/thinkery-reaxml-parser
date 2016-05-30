@@ -11,12 +11,13 @@ class Address
     protected $streetNumber;
     protected $street;
     protected $suburb;
+    protected $municipality;
     protected $state;
     protected $region;
     protected $postcode;
     protected $country = 'AUS'; // default australia
 
-    public function __construct(\SimpleXMLElement $address)
+    public function __construct(\SimpleXMLElement $address, $municipality = false)
     {
         // set display_address
         $this->setDisplayAddress($address->attributes()->display);
@@ -32,6 +33,8 @@ class Address
         $this->setStreet((string) $address->street);
         // set suburb
         $this->setSuburb((string) $address->suburb);
+        // set municipality
+        $this->setMunicipality($municipality);
         // set state
         $this->setState((string) $address->state);
         // set region
@@ -166,6 +169,23 @@ class Address
     public function setSuburb($suburb)
     {
         $this->suburb = $suburb;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMunicipality()
+    {
+        return $this->municipality;
+    }
+    /**
+     * @param mixed $municipality
+     * @return Address
+     */
+    public function setMunicipality($municipality)
+    {
+        $this->municipality = $municipality;
         return $this;
     }
 

@@ -20,6 +20,7 @@ abstract class Listing
     protected $payment_freq;
     protected $listing_office;
     protected $title;
+    protected $municipality;
     protected $short_description;
     protected $description;
     protected $terms;
@@ -45,10 +46,9 @@ abstract class Listing
     protected $created;
     protected $modified;
     protected $features = [];
-
     /* @var ListingAgent $agent */
     protected $agent;
-    /* @var Address $agent */
+    /* @var Address $address */
     protected $address;
     /* @var Media $media */
     protected $media;
@@ -73,10 +73,13 @@ abstract class Listing
         $this->setUniqueId((string) $xml->uniqueID);
         $this->setTitle((string) $xml->headline);
         $this->setDescription((string) $xml->description);
+        if ($xml->municipality) {
+            $this->setMunicipality((string) $xml->municipality);
+        }
         if ($xml->address) {
             $this->setAddress($xml->address);
         }
-        if ($xml->agent) {
+        if ($xml->listingAgent) {
             $this->setAgent($xml->listingAgent, (string) $xml->agentID);
         }
         $this->setMedia($xml);
@@ -104,6 +107,7 @@ abstract class Listing
     public function setStatus($status)
     {
         $this->status = $status;
+        return $this;
     }
 
     /**
@@ -120,6 +124,7 @@ abstract class Listing
     public function setUniqueId($unique_id)
     {
         $this->unique_id = $unique_id;
+        return $this;
     }
 
     /**
@@ -154,6 +159,7 @@ abstract class Listing
     public function setSaleType($sale_type)
     {
         $this->sale_type = $sale_type;
+        return $this;
     }
 
     /**
@@ -170,6 +176,7 @@ abstract class Listing
     public function setCategory($category)
     {
         $this->category = $category;
+        return $this;
     }
 
     /**
@@ -186,6 +193,7 @@ abstract class Listing
     public function setPaymentFreq($payment_freq)
     {
         $this->payment_freq = $payment_freq;
+        return $this;
     }
 
     /**
@@ -221,6 +229,24 @@ abstract class Listing
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMunicipality()
+    {
+        return $this->municipality;
+    }
+
+    /**
+     * @param mixed $municipality
+     * @return Listing
+     */
+    public function setMunicipality($municipality)
+    {
+        $this->municipality = $municipality;
         return $this;
     }
 
@@ -310,6 +336,7 @@ abstract class Listing
     public function setPriceView($price_view)
     {
         $this->price_view = $price_view;
+        return $this;
     }
 
     /**
@@ -638,7 +665,7 @@ abstract class Listing
      */
     public function setAddress($address)
     {
-        $this->address = new Address($address);
+        $this->address = new Address($address, $this->getMunicipality());
         return $this;
     }
 
