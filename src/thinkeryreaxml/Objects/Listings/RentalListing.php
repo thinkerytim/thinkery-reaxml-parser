@@ -9,6 +9,7 @@ class RentalListing extends Listing
         parent::__construct($xml);
 
         $this->setPrice((string) $xml->rent);
+        $this->setIsRental(true);
         $this->setCategory((string) $xml->category->attributes()->name);
         $this->setPaymentFreq((string) $xml->rent->attributes()->period);
         $this->setCallForPrice((string) $xml->rent->attributes()->display);

@@ -34,6 +34,7 @@ abstract class Listing
     protected $lotsize;
     protected $lot_acres;
     protected $yearbuilt;
+    protected $is_rental;
     protected $energy_rating;
     protected $propview = [];
     protected $school_district;
@@ -155,11 +156,28 @@ abstract class Listing
 
     /**
      * @param mixed $sale_type
+     * @return $this
      */
     public function setSaleType($sale_type)
     {
         $this->sale_type = $sale_type;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsRental()
+    {
+        return $this->is_rental;
+    }
+
+    /**
+     * @param mixed $is_rental
+     */
+    public function setIsRental($is_rental)
+    {
+        $this->is_rental = $is_rental;
     }
 
     /**
