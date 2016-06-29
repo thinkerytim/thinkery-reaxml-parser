@@ -30,6 +30,7 @@ class ResidentialListingTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ImageObject::class, $parsed->getMedia()->getImages()[0]);
         $this->assertSame('http://www.realestate.com.au/tmp/imageM.jpg', $parsed->getMedia()->getImages()[0]->getUrl());
         $this->assertSame(1, $parsed->getMedia()->getImages()[0]->getOrdering());
+        $this->assertFalse($parsed->getIsRental());
         $this->assertCount(2, $parsed->getMedia()->getImages());
         $this->assertInstanceOf(FloorplanObject::class, $parsed->getMedia()->getFloorplans()[0]);
         $this->assertSame('http://www.realestate.com.au/tmp/floorplan1.gif', $parsed->getMedia()->getFloorplans()[0]->getUrl());

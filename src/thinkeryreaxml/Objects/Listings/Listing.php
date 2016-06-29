@@ -34,7 +34,7 @@ abstract class Listing
     protected $lotsize;
     protected $lot_acres;
     protected $yearbuilt;
-    protected $is_rental;
+    protected $is_rental = false;
     protected $energy_rating;
     protected $propview = [];
     protected $school_district;
