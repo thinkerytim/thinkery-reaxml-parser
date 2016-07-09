@@ -71,27 +71,30 @@ abstract class Listing
     {
         $this->setModified((string) $xml->attributes()->modTime);
         $this->setStatus((string) $xml->attributes()->status);
-        $this->setUniqueId((string) $xml->uniqueID);
-        $this->setTitle((string) $xml->headline);
-        $this->setDescription((string) $xml->description);
-        if ($xml->municipality) {
-            $this->setMunicipality((string) $xml->municipality);
+
+        if ($this->getStatus() != 'sold' and $this->getStatus() != 'withdrawn') {
+            $this->setUniqueId((string)$xml->uniqueID);
+            $this->setTitle((string)$xml->headline);
+            $this->setDescription((string)$xml->description);
+            if ($xml->municipality) {
+                $this->setMunicipality((string)$xml->municipality);
+            }
+            if ($xml->address) {
+                $this->setAddress($xml->address);
+            }
+            if ($xml->listingAgent) {
+                $this->setAgent($xml->listingAgent, (string)$xml->agentID);
+            }
+            $this->setMedia($xml);
+            $this->setVideo((string)$xml->videoLink);
+            $this->setPrice((int)$xml->price);
+            $this->setPriceView((string)$xml->priceView);
+            $this->setDisplayPrice((string)$xml->price->attributes()->display);
+            if ($xml->views) {
+                $this->setPropview($xml->views);
+            }
+            $this->setFeatures($xml);
         }
-        if ($xml->address) {
-            $this->setAddress($xml->address);
-        }
-        if ($xml->listingAgent) {
-            $this->setAgent($xml->listingAgent, (string) $xml->agentID);
-        }
-        $this->setMedia($xml);
-        $this->setVideo((string) $xml->videoLink);
-        $this->setPrice((int) $xml->price);
-        $this->setPriceView((string) $xml->priceView);
-        $this->setDisplayPrice((string) $xml->price->attributes()->display);
-        if ($xml->views) {
-            $this->setPropview($xml->views);
-        }
-        $this->setFeatures($xml);
     }
 
     /**
@@ -701,9 +704,6 @@ abstract class Listing
      */
     public function setMedia($objects)
     {
-        if (!tidy_is_xml($objects)) {
-            return;
-        }
         $this->media = new Media($objects);
         return $this;
     }
