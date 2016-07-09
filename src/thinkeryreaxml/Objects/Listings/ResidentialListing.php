@@ -10,6 +10,9 @@ class ResidentialListing extends Listing
     {
         parent::__construct($xml);
         $this->setType('residential');
-        $this->setCategory((string) $xml->category->attributes()->name);
+
+        if ($this->getStatus() != 'sold' and $this->getStatus() != 'withdrawn') {
+            $this->setCategory((string)$xml->category->attributes()->name);
+        }
     }
 }

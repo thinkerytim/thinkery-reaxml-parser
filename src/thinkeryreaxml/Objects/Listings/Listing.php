@@ -701,6 +701,9 @@ abstract class Listing
      */
     public function setMedia($objects)
     {
+        if (!tidy_is_xml($objects)) {
+            return;
+        }
         $this->media = new Media($objects);
         return $this;
     }

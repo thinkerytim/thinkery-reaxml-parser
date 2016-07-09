@@ -9,6 +9,8 @@ class RuralListing extends Listing
     public function __construct(SimpleXMLElement $xml)
     {
         parent::__construct($xml);
-        $this->setCategory((string) $xml->ruralCategory->attributes()->name);
+        if ($this->getStatus() != 'sold' and $this->getStatus() != 'withdrawn') {
+            $this->setCategory((string)$xml->ruralCategory->attributes()->name);
+        }
     }
 }
