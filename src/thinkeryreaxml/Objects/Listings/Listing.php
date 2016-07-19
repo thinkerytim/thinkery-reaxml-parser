@@ -71,9 +71,9 @@ abstract class Listing
     {
         $this->setModified((string) $xml->attributes()->modTime);
         $this->setStatus((string) $xml->attributes()->status);
+        $this->setUniqueId((string)$xml->uniqueID);
 
         if ($this->getStatus() != 'sold' and $this->getStatus() != 'withdrawn') {
-            $this->setUniqueId((string)$xml->uniqueID);
             $this->setTitle((string)$xml->headline);
             $this->setDescription((string)$xml->description);
             if ($xml->municipality) {
