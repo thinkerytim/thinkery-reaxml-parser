@@ -96,12 +96,11 @@ class Parser
 
                 /* @var Listing $parser */
                 $results[] = new $parser($xml);
+                unset($node);
+                unset($dom);
+                unset($xml);
             }
-            unset($node);
-            unset($dom);
-            unset($xml);
         }
         return $results;
-
     }
 }
