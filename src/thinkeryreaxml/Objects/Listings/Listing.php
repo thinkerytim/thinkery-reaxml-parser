@@ -66,14 +66,19 @@ abstract class Listing
         'buildingDetails',
         'vendorDetails',
     ];
+    // set the inactive statuses here
+    protected $inactive = [
+        'leased', 'withdrawn', 'sold', 'rented'
+    ];
 
     public function __construct(SimpleXMLElement $xml)
     {
         $this->setModified((string) $xml->attributes()->modTime);
         $this->setStatus((string) $xml->attributes()->status);
         $this->setUniqueId((string)$xml->uniqueID);
+        $status = $this->getStatus();
 
-        if ($this->getStatus() != 'sold' and $this->getStatus() != 'withdrawn') {
+        if (!in_array($status, $this->inactive)) {
             $this->setTitle((string)$xml->headline);
             $this->setDescription((string)$xml->description);
             if ($xml->municipality) {
@@ -87,9 +92,11 @@ abstract class Listing
             }
             $this->setMedia($xml);
             $this->setVideo((string)$xml->videoLink);
-            $this->setPrice((int)$xml->price);
             $this->setPriceView((string)$xml->priceView);
-            $this->setDisplayPrice((string)$xml->price->attributes()->display);
+            if ($xml->price) {
+                $this->setPrice((int)$xml->price);
+                $this->setDisplayPrice((string)$xml->price->attributes()->display);
+            }
             if ($xml->views) {
                 $this->setPropview($xml->views);
             }

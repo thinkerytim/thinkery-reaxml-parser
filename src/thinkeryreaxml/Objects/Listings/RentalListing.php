@@ -9,7 +9,7 @@ class RentalListing extends Listing
         parent::__construct($xml);
         $this->setIsRental(true);
 
-        if ($this->getStatus() != 'sold' and $this->getStatus() != 'withdrawn') {
+        if (!in_array($status, $this->inactive)) {
             $this->setPrice((string)$xml->rent);
             $this->setCategory((string)$xml->category->attributes()->name);
             $this->setPaymentFreq((string)$xml->rent->attributes()->period);

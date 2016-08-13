@@ -10,7 +10,7 @@ class RuralListing extends Listing
     {
         parent::__construct($xml);
 
-        if ($this->getStatus() != 'sold' and $this->getStatus() != 'withdrawn') {
+        if (!in_array($status, $this->inactive)) {
             $this->setCategory((string)$xml->ruralCategory->attributes()->name);
         }
     }

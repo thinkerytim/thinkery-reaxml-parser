@@ -10,7 +10,7 @@ class HolidayRentalListing extends Listing
     {
         parent::__construct($xml);
         $this->setIsRental(true);
-        if ($this->getStatus() != 'sold' and $this->getStatus() != 'withdrawn') {
+        if (!in_array($status, $this->inactive)) {
             $this->setCategory((string)$xml->holidayCategory->attributes()->name);
         }
     }
