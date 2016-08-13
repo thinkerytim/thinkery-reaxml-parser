@@ -10,7 +10,7 @@ class ResidentialListing extends Listing
     {
         parent::__construct($xml);
         $this->setType('residential');
-        if (!in_array($status, $this->inactive)) {
+        if (!in_array($this->getStatus(), $this->inactive)) {
             $this->setCategory((string)$xml->category->attributes()->name);
         }
     }

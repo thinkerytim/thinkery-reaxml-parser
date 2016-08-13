@@ -10,7 +10,7 @@ class BusinessListing extends Listing
     {
         parent::__construct($xml);
 
-        if (!in_array($status, $this->inactive)) {
+        if (!in_array($this->getStatus(), $this->inactive)) {
             $this->setCategory((string)$xml->businessCategory->name);
             $this->setAvailable((string)$xml->currentLeaseEndDate);
             $this->setSaleType((string)$xml->commercialListingType->attributes()->value);

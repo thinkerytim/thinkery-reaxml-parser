@@ -76,9 +76,8 @@ abstract class Listing
         $this->setModified((string) $xml->attributes()->modTime);
         $this->setStatus((string) $xml->attributes()->status);
         $this->setUniqueId((string)$xml->uniqueID);
-        $status = $this->getStatus();
 
-        if (!in_array($status, $this->inactive)) {
+        if (!in_array($this->getStatus(), $this->inactive)) {
             $this->setTitle((string)$xml->headline);
             $this->setDescription((string)$xml->description);
             if ($xml->municipality) {
