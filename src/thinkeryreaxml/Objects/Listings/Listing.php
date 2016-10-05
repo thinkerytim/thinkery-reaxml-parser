@@ -94,7 +94,11 @@ abstract class Listing
             $this->setPriceView((string)$xml->priceView);
             if ($xml->price) {
                 $this->setPrice((int)$xml->price);
-                $this->setDisplayPrice((string)$xml->price->attributes()->display);
+                if (isset($xml->price->attributes()->display)) {
+                    $this->setDisplayPrice((string)$xml->price->attributes()->display);
+                } else {
+                    $this->setDisplayPrice(true);
+                }
             }
             if ($xml->views) {
                 $this->setPropview($xml->views);
