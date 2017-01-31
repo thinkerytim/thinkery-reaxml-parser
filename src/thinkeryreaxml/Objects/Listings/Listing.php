@@ -13,6 +13,8 @@ use ThinkReaXMLParser\Objects\Media;
 
 abstract class Listing
 {
+    protected $agentId;
+    protected $agents;
     protected $unique_id;
     protected $type;
     protected $sale_type;
@@ -87,7 +89,10 @@ abstract class Listing
                 $this->setAddress($xml->address);
             }
             if ($xml->listingAgent) {
-                $this->setAgent($xml->listingAgent, (string)$xml->agentID);
+                $this->setAgents($xml->listingAgent->xpath('//listingAgent'));
+            }
+            if ($xml->agentID) {
+                $this->setAgentId((string) $xml->agentID);
             }
             $this->setMedia($xml);
             $this->setVideo((string)$xml->videoLink);
@@ -104,7 +109,29 @@ abstract class Listing
                 $this->setPropview($xml->views);
             }
             $this->setFeatures($xml);
+            $this->setLatitude((string) $xml->Geocode->Latitude);
+            $this->setLongitude((string) $xml->Geocode->Longitude);
         }
+    }
+
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    }
+
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
     }
 
     /**
@@ -623,7 +650,7 @@ abstract class Listing
      */
     public function setAvailable($available)
     {
-        $this->available = new Carbon($available);
+        $this->available = Carbon::parse($available);
         return $this;
     }
 
@@ -659,7 +686,19 @@ abstract class Listing
      */
     public function setModified($modified)
     {
-        $this->modified = Carbon::createFromFormat('Y-m-d-H:i:s', $modified);
+        // If no modified date is set we'll set the time to now
+        if (empty($modified)) {
+            $this->modified = Carbon::now();
+            return $this;
+        }
+
+        try {
+            $this->modified = Carbon::createFromFormat('Y-m-d-H:i:s', $modified);
+        }
+        catch (\Exception $e) {
+            $this->modified = Carbon::parse($modified);
+        }
+
         return $this;
     }
 
@@ -678,8 +717,47 @@ abstract class Listing
      */
     public function setAgent($agent, $agent_id)
     {
-        $this->agent = new ListingAgent($agent, $agent_id);
+        $this->agent[] = new ListingAgent($agent, $agent_id);
         return $this;
+    }
+
+    /**
+     * @param array $agent
+     * @return Listing
+     */
+    public function setAgents($agents)
+    {
+        foreach ($agents as $agent) {
+            $this->agents[] = new ListingAgent($agent);
+        }
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAgents()
+    {
+        return $this->agents;
+    }
+
+    /**
+     * @param string $agentId
+     * @return Listing
+     */
+    public function setAgentId($agentId)
+    {
+        $this->agentId = $agentId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAgentId()
+    {
+        return $this->agentId;
     }
 
     /**
@@ -724,6 +802,22 @@ abstract class Listing
     public function getFeatures()
     {
         return $this->features;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFeatureDetails()
+    {
+        $features = [];
+
+        foreach(array_filter($this->features, function ($feature) {
+            return $feature->getType() == 'features';
+        }) as $feature) {
+            $features[$feature->getName()] = $feature->getValue();
+        }
+
+        return $features;
     }
 
     /**

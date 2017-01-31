@@ -2,8 +2,9 @@
 
 namespace ThinkReaXMLParser\Objects;
 
+use JsonSerializable;
 
-class ListingAgent
+class ListingAgent implements JsonSerializable
 {
     protected $order = 1;
     protected $agentID;
@@ -15,7 +16,7 @@ class ListingAgent
     protected $facebookURL;
     protected $linkedInURL;
 
-    public function __construct(\SimpleXMLElement $agent, $agent_id)
+    public function __construct(\SimpleXMLElement $agent)
     {
         $this->order = $agent->attributes()->id ?: 1;
         $this->setName((string) $agent->name);
@@ -25,10 +26,30 @@ class ListingAgent
         $this->setTwitterURL((string) $agent->twitterURL);
         $this->setFacebookURL((string) $agent->facebookURL);
         $this->setLinkedInURL((string) $agent->linkedInURL);
-        // only do this for first agent
-        if ($this->order == 1) {
-            $this->setAgentID((string) $agent_id);
-        }
+        $this->setAgentID((string) $agent->agentid);
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'order' => $this->getOrder(),
+            'agentId' => $this->getAgentId(),
+            'name' => $this->getName(),
+            'telephone' => $this->getTelephone(),
+            'telephoneType' => $this->getTelephoneType(),
+            'email' => $this->getEmail(),
+            'twitterURL' => $this->getTwitterURL(),
+            'facebookURL' => $this->getFacebookURL(),
+            'linkedInURL' => $this->getLinkedInURL()
+        ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 
     /**

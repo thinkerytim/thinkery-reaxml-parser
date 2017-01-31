@@ -51,6 +51,7 @@ class Parser
         } catch (\Exception $e) {
             throw new FailedToParseFileException("Failed to parse file at ".$this->file);
         }
+
         while ($xmlreader->read()) {
             if ($xmlreader->nodeType == XMLReader::ELEMENT and in_array($xmlreader->localName, $property_classes)) {
                 $node = $xmlreader->expand();
@@ -101,6 +102,7 @@ class Parser
                 unset($xml);
             }
         }
+
         return $results;
     }
 }

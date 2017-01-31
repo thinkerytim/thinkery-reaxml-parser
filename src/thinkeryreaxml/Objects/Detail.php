@@ -2,7 +2,9 @@
 
 namespace ThinkReaXMLParser\Objects;
 
-class Detail
+use JsonSerializable;
+
+class Detail implements JsonSerializable
 {
     protected $type;
     protected $name;
@@ -22,6 +24,16 @@ class Detail
         $this->setName($name);
         $this->setValue($value);
         $this->setContext($context);
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'type' => $this->type,
+            'name' => $this->name,
+            'value' => $this->value,
+            'context' => $this->context
+        ];
     }
 
     /**
