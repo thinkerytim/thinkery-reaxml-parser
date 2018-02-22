@@ -14,8 +14,15 @@ class Media
     {
         $temp_objects = [];
 
+        if (!count($xml->objects)) {
+            return;
+        }
+
         $objects = $xml->objects->children();
 
+        if (!count($objects)) {
+            die;
+        }
         foreach ($objects as $object) {
             $temp_objects[] = $object;
         }
