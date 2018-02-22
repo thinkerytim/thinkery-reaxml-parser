@@ -52,7 +52,7 @@ class MediaMember implements MediaObject
         if (!$modified) {
             return $this;
         }
-        $this->modified = Carbon::createFromFormat('Y-m-d-H:i:s', $modified);
+        $this->modified = Carbon::parse($modified);
         return $this;
     }
 
