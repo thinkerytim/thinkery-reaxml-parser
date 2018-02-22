@@ -1,7 +1,7 @@
 {
   "name": "thinkerytim/thinkery-reaxml-parser",
   "description": "PHP Parser Class for REA XML",
-  "license": "Apache v2.0 License",
+  "license": "Apache-2.0",
   "keywords": [
     "reaxml", "rea", "real estate", "php"
   ],
