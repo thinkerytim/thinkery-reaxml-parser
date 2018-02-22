@@ -5,7 +5,7 @@ This is a simple set of classes to parse a ReaXML formatted XML file into usable
 ReaXML Feed schema and information from http://reaxml.realestate.com.au/propertyList.dtd and http://reaxml.realestate.com.au/docs/reaxml1-xml-format.html
 
 ## Installation
-composer require thinkerytim/thinkery-reaxml-parser
+`composer require thinkerytim/thinkery-reaxml-parser`
 
 ##Usage
     require_once('vendor/autoload.php');
