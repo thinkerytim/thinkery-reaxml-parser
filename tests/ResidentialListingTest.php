@@ -24,8 +24,8 @@ class ResidentialListingTest extends PHPUnit_Framework_TestCase
         $parsed = new ResidentialListing($this->xml);
 
         $this->assertSame('ABCD1234', $parsed->getUniqueId());
-        $this->assertSame('XNWXNW', $parsed->getAgent()->getAgentID());
-        $this->assertSame('Mr. John Doe', $parsed->getAgent()->getName());
+        $this->assertSame('XNWXNW', $parsed->getAgents()[0]->getAgentID());
+        $this->assertSame('Mr. John Doe', $parsed->getAgents()[0]->getName());
         $this->assertInstanceOf(ResidentialListing::class, $parsed);
         $this->assertInstanceOf(ImageObject::class, $parsed->getMedia()->getImages()[0]);
         $this->assertSame('http://www.realestate.com.au/tmp/imageM.jpg', $parsed->getMedia()->getImages()[0]->getUrl());

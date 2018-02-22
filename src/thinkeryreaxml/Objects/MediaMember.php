@@ -3,6 +3,7 @@
 namespace ThinkReaXMLParser\Objects;
 
 use Carbon\Carbon;
+use ThinkReaXMLParser\Utilities\DateAndTime;
 
 class MediaMember implements MediaObject
 {
@@ -52,7 +53,7 @@ class MediaMember implements MediaObject
         if (!$modified) {
             return $this;
         }
-        $this->modified = Carbon::parse($modified);
+        $this->modified = Carbon::parse(DateAndTime::cleanDateTime($modified));
         return $this;
     }
 

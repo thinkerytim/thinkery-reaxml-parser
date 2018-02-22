@@ -10,6 +10,7 @@ use ThinkReaXMLParser\Objects\ImageObject;
 use ThinkReaXMLParser\Objects\InspectionTime;
 use ThinkReaXMLParser\Objects\ListingAgent;
 use ThinkReaXMLParser\Objects\Media;
+use ThinkReaXMLParser\Utilities\DateAndTime;
 
 abstract class Listing
 {
@@ -88,11 +89,11 @@ abstract class Listing
             if ($xml->address) {
                 $this->setAddress($xml->address);
             }
-            if ($xml->listingAgent) {
-                $this->setAgents($xml->listingAgent->xpath('//listingAgent'));
-            }
             if ($xml->agentID) {
                 $this->setAgentId((string) $xml->agentID);
+            }
+            if ($xml->listingAgent) {
+                $this->setAgents($xml->listingAgent->xpath('//listingAgent'));
             }
             $this->setMedia($xml);
             $this->setVideo((string)$xml->videoLink);
@@ -650,7 +651,7 @@ abstract class Listing
      */
     public function setAvailable($available)
     {
-        $this->available = Carbon::parse($available);
+        $this->available = Carbon::parse(DateAndTime::cleanDateTime($available));
         return $this;
     }
 
@@ -692,12 +693,7 @@ abstract class Listing
             return $this;
         }
 
-        try {
-            $this->modified = Carbon::createFromFormat('Y-m-d-H:i:s', $modified);
-        }
-        catch (\Exception $e) {
-            $this->modified = Carbon::parse($modified);
-        }
+        $this->modified = Carbon::parse(DateAndTime::cleanDateTime($modified));
 
         return $this;
     }
@@ -728,7 +724,7 @@ abstract class Listing
     public function setAgents($agents)
     {
         foreach ($agents as $agent) {
-            $this->agents[] = new ListingAgent($agent);
+            $this->agents[] = new ListingAgent($agent, $this->getAgentId());
         }
         return $this;
     }

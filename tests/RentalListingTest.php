@@ -22,15 +22,15 @@ class RentalListingTest extends PHPUnit_Framework_TestCase
     public function testRentalListingsParser()
     {
         $parsed = new RentalListing($this->xml);
-var_dump($parsed);
+
         $this->assertSame('ABCD1234', $parsed->getUniqueId());
-        $this->assertSame('XNWXNW', $parsed->getAgent()->getAgentID());
-        $this->assertSame('Mr. John Doe', $parsed->getAgent()->getName());
-        $this->assertInstanceOf(ResidentialListing::class, $parsed);
+        $this->assertSame('XNWXNW', $parsed->getAgents()[0]->getAgentID());
+        $this->assertSame('Mr. John Doe', $parsed->getAgents()[0]->getName());
+        $this->assertInstanceOf(RentalListing::class, $parsed);
         $this->assertInstanceOf(ImageObject::class, $parsed->getMedia()->getImages()[0]);
         $this->assertSame('http://www.realestate.com.au/tmp/imageM.jpg', $parsed->getMedia()->getImages()[0]->getUrl());
         $this->assertSame(1, $parsed->getMedia()->getImages()[0]->getOrdering());
-        $this->assertFalse($parsed->getIsRental());
+        $this->assertTrue($parsed->getIsRental());
         $this->assertCount(2, $parsed->getMedia()->getImages());
         $this->assertInstanceOf(FloorplanObject::class, $parsed->getMedia()->getFloorplans()[0]);
         $this->assertSame('http://www.realestate.com.au/tmp/floorplan1.gif', $parsed->getMedia()->getFloorplans()[0]->getUrl());
@@ -40,9 +40,8 @@ var_dump($parsed);
         $this->assertSame('House', $parsed->getCategory());
         $this->assertSame('Yarra', $parsed->getMunicipality());
         $this->assertSame('Yarra', $parsed->getAddress()->getMunicipality());
-        $this->assertSame(500000, $parsed->getPrice());
-        $this->assertSame("Between $400,000 and $600,000", $parsed->getPriceView());
-        $this->assertTrue($parsed->getDisplayPrice());
+        $this->assertSame('350', $parsed->getPrice());
+        $this->assertFalse($parsed->getDisplayPrice());
         $this->assertInstanceOf(\Carbon\Carbon::class, $parsed->getModified());
     }
 }

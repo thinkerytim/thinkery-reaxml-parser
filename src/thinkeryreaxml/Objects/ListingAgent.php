@@ -16,7 +16,7 @@ class ListingAgent implements JsonSerializable
     protected $facebookURL;
     protected $linkedInURL;
 
-    public function __construct(\SimpleXMLElement $agent)
+    public function __construct(\SimpleXMLElement $agent, $agent_id = false)
     {
         $this->order = $agent->attributes()->id ?: 1;
         $this->setName((string) $agent->name);
@@ -26,7 +26,12 @@ class ListingAgent implements JsonSerializable
         $this->setTwitterURL((string) $agent->twitterURL);
         $this->setFacebookURL((string) $agent->facebookURL);
         $this->setLinkedInURL((string) $agent->linkedInURL);
-        $this->setAgentID((string) $agent->agentid);
+
+        if ($agent->agentid) {
+            $this->setAgentID((string)$agent->agentid);
+        } else if ($agent_id) {
+            $this->setAgentID($agent_id);
+        }
     }
 
     public function jsonSerialize()

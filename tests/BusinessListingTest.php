@@ -22,11 +22,11 @@ class BusinessListingTest extends PHPUnit_Framework_TestCase
     public function testBusinessListingsParser()
     {
         $parsed = new BusinessListing($this->xml);
-
+$t = $parsed->getAgent();
         $this->assertSame('ABCD1234', $parsed->getUniqueId());
-        $this->assertSame('XNWXNW', $parsed->getAgent()->getAgentID());
+        $this->assertSame('XNWXNW', $parsed->getAgents()[0]->getAgentID());
         $this->assertSame('sale', $parsed->getSaleType());
-        $this->assertSame('Mr. John Doe', $parsed->getAgent()->getName());
+        $this->assertSame('Mr. John Doe', $parsed->getAgents()[0]->getName());
         $this->assertSame(120000, $parsed->getIncome());
         $this->assertInstanceOf(BusinessListing::class, $parsed);
         $this->assertInstanceOf(ImageObject::class, $parsed->getMedia()->getImages()[0]);
