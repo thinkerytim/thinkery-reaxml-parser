@@ -4,8 +4,8 @@ namespace ThinkReaXMLParser\Objects\Listings;
 
 class CommercialLandListing extends CommercialListing
 {
-    public function __construct(SimpleXMLElement $xml, $type = 'commercialLand')
+    public function __construct(SimpleXMLElement $xml)
     {
-        parent::__construct($xml, $type);
+        parent::__construct($xml);
     }
 }

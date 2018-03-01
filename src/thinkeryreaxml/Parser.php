@@ -2,9 +2,11 @@
 
 namespace ThinkReaXMLParser;
 
-use DOMDocument;
+use DomDocument;
 use ThinkReaXMLParser\Exceptions\FailedToParseFileException;
 use ThinkReaXMLParser\Exceptions\InvalidFileException;
+use ThinkReaXMLParser\Objects\Listings\BusinessListing;
+use ThinkReaXMLParser\Objects\Listings\CommercialLandListing;
 use ThinkReaXMLParser\Objects\Listings\CommercialListing;
 use ThinkReaXMLParser\Objects\Listings\HolidayRentalListing;
 use ThinkReaXMLParser\Objects\Listings\LandListing;
@@ -17,6 +19,17 @@ use XMLReader;
 class Parser
 {
     protected $file;
+
+    protected $listings = [
+         'business' => BusinessListing::class,
+         'commercialLand' => CommercialLandListing::class,
+         'commercial' => CommercialListing::class,
+         'holidayRental' => HolidayRentalListing::class,
+         'land' => LandListing::class,
+         'rental' => RentalListing::class,
+         'residential' => ResidentialListing::class,
+         'rural' => RuralListing::class,
+    ];
 
     /**
      * Parser constructor.
@@ -42,68 +55,41 @@ class Parser
          * ReaXML Feed schema and information from http://reaxml.realestate.com.au/propertyList.dtd
          * and http://reaxml.realestate.com.au/docs/reaxml1-xml-format.html
          */
-        $property_classes = ["business", "commercial", "commercialLand", "land", "rental", "holidayRental", "residential", "rural"];
         $results = [];
 
-        $xmlreader = new XMLReader();
+        $xml_reader = new XMLReader();
+
         try {
-            $xmlreader->open($this->file);
+            $xml_reader->open($this->file);
         } catch (\Exception $e) {
             throw new FailedToParseFileException("Failed to parse file at ".$this->file);
         }
 
-        while ($xmlreader->read()) {
-            if ($xmlreader->nodeType == XMLReader::ELEMENT and in_array($xmlreader->localName, $property_classes)) {
-                $node = $xmlreader->expand();
-                $dom = new DomDocument();
-                $n = $dom->importNode($node, true);
-                $dom->appendChild($n);
-                $xml = simplexml_import_dom($n);
+        while ($xml_reader->read()) {
+            $type = $xml_reader->localName;
+            $listing = !empty($this->listings[$type]) ? $this->listings[$type] : null;
 
-                switch ($type = $xmlreader->localName) {
-                    // business
-                    case 'business':
-                        $parser = BusinessListing::class;
-                        break;
-                    // commercial
-                    case 'commercial':
-                        $parser = CommercialListing::class;
-                        break;
-                    // commercial land
-                    case 'commercialLand':
-                        $parser = CommercialLandListing::class;
-                        break;
-                    // residential land
-                    case 'land':
-                        $parser = LandListing::class;
-                        break;
-                    // rental
-                    case 'rental':
-                        $parser = RentalListing::class;
-                        break;
-                    // holiday rental
-                    case 'holidayRental':
-                        $parser = HolidayRentalListing::class;
-                        break;
-                    // residential
-                    case 'residential':
-                        $parser = ResidentialListing::class;
-                        break;
-                    // rural
-                    case 'rural':
-                        $parser = RuralListing::class;
-                        break;
-                }
+            if ($xml_reader->nodeType == XMLReader::ELEMENT && $listing) {
 
                 /* @var Listing $parser */
-                $results[] = new $parser($xml, $type);
+                $results[] = new $listing($this->convertToSimpleXMLElement($xml_reader));
 
-                unset($node);
-                unset($dom);
-                unset($xml);
             }
         }
 
         return $results;
+    }
+
+    /**
+     * @param XMLReader $xml_reader
+     * @return \SimpleXMLElement
+     */
+    protected function convertToSimpleXMLElement(XMLReader $xml_reader)
+    {
+        $node = $xml_reader->expand();
+        $dom = new DomDocument();
+        $dom->appendChild($dom->importNode($node, true));
+
+        return simplexml_import_dom($dom);
     }
 }
