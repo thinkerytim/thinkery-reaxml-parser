@@ -651,7 +651,7 @@ abstract class Listing
      */
     public function setAvailable($available)
     {
-        $this->available = Carbon::parse(DateAndTime::cleanDateTime($available));
+        $this->available = DateAndTime::parseToCarbon($available);
         return $this;
     }
 
@@ -693,7 +693,7 @@ abstract class Listing
             return $this;
         }
 
-        $this->modified = Carbon::parse(DateAndTime::cleanDateTime($modified));
+        $this->modified = DateAndTime::parseToCarbon($modified);
 
         return $this;
     }

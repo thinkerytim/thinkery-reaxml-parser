@@ -53,7 +53,7 @@ class MediaMember implements MediaObject
         if (!$modified) {
             return $this;
         }
-        $this->modified = Carbon::parse(DateAndTime::cleanDateTime($modified));
+        $this->modified = DateAndTime::parseToCarbon($modified);
         return $this;
     }
 
