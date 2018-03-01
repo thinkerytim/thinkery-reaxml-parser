@@ -6,9 +6,9 @@ use SimpleXMLElement;
 
 class BusinessListing extends Listing
 {
-    public function __construct(SimpleXMLElement $xml)
+    public function __construct(SimpleXMLElement $xml, $type = 'business')
     {
-        parent::__construct($xml);
+        parent::__construct($xml, $type);
 
         if (!in_array($this->getStatus(), $this->inactive)) {
             $this->setCategory((string)$xml->businessCategory->name);

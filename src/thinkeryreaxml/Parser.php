@@ -96,7 +96,7 @@ class Parser
                 }
 
                 /* @var Listing $parser */
-                $results[] = (new $parser($xml))->setType($type);
+                $results[] = new $parser($xml, $type);
 
                 unset($node);
                 unset($dom);

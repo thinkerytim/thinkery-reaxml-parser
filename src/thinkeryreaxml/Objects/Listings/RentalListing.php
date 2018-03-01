@@ -4,9 +4,9 @@ namespace ThinkReaXMLParser\Objects\Listings;
 
 class RentalListing extends Listing
 {
-    public function __construct(\SimpleXMLElement $xml)
+    public function __construct(\SimpleXMLElement $xml, $type = 'rental')
     {
-        parent::__construct($xml);
+        parent::__construct($xml, $type);
         $this->setIsRental(true);
 
         if (!in_array($this->getStatus(), $this->inactive)) {

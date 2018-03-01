@@ -74,11 +74,12 @@ abstract class Listing
         'leased', 'withdrawn', 'sold', 'rented'
     ];
 
-    public function __construct(SimpleXMLElement $xml)
+    public function __construct(SimpleXMLElement $xml, $type = 'listing')
     {
+        $this->setType((string) $type);
         $this->setModified((string) $xml->attributes()->modTime);
         $this->setStatus((string) $xml->attributes()->status);
-        $this->setUniqueId((string)$xml->uniqueID);
+        $this->setUniqueId((string) $xml->uniqueID);
 
         if (!in_array($this->getStatus(), $this->inactive)) {
             $this->setTitle((string)$xml->headline);

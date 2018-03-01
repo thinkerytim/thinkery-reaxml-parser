@@ -23,6 +23,7 @@ class RentalListingTest extends PHPUnit_Framework_TestCase
     {
         $parsed = new RentalListing($this->xml);
 
+        $this->assertSame('rental', $parsed->getType());
         $this->assertSame('ABCD1234', $parsed->getUniqueId());
         $this->assertSame('XNWXNW', $parsed->getAgents()[0]->getAgentID());
         $this->assertSame('Mr. John Doe', $parsed->getAgents()[0]->getName());
