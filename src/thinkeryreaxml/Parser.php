@@ -60,7 +60,7 @@ class Parser
                 $dom->appendChild($n);
                 $xml = simplexml_import_dom($n);
 
-                switch ($xmlreader->localName) {
+                switch ($type = $xmlreader->localName) {
                     // business
                     case 'business':
                         $parser = BusinessListing::class;
@@ -96,7 +96,8 @@ class Parser
                 }
 
                 /* @var Listing $parser */
-                $results[] = new $parser($xml);
+                $results[] = (new $parser($xml))->setType($type);
+
                 unset($node);
                 unset($dom);
                 unset($xml);
