@@ -86,10 +86,8 @@ class Parser
      */
     protected function convertToSimpleXMLElement(XMLReader $xml_reader)
     {
-        $node = $xml_reader->expand();
         $dom = new DomDocument();
-        $dom->appendChild($dom->importNode($node, true));
 
-        return simplexml_import_dom($dom);
+        return simplexml_import_dom($dom->appendChild($dom->importNode($xml_reader->expand(), true)));
     }
 }
