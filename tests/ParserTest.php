@@ -22,7 +22,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testResidentialListingsParser()
     {
-        $listings = (new Parser($this->xml))->parse();
+        $listings = Parser::parse($this->xml);
 
         $this->assertCount(3, $listings);
 
