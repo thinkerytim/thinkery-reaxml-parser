@@ -76,9 +76,10 @@ abstract class Listing
 
     public function __construct(SimpleXMLElement $xml)
     {
+        $this->setType((string) $xml->getName());
         $this->setModified((string) $xml->attributes()->modTime);
         $this->setStatus((string) $xml->attributes()->status);
-        $this->setUniqueId((string)$xml->uniqueID);
+        $this->setUniqueId((string) $xml->uniqueID);
 
         if (!in_array($this->getStatus(), $this->inactive)) {
             $this->setTitle((string)$xml->headline);
@@ -651,7 +652,7 @@ abstract class Listing
      */
     public function setAvailable($available)
     {
-        $this->available = Carbon::parse(DateAndTime::cleanDateTime($available));
+        $this->available = DateAndTime::parseToCarbon($available);
         return $this;
     }
 
@@ -693,7 +694,7 @@ abstract class Listing
             return $this;
         }
 
-        $this->modified = Carbon::parse(DateAndTime::cleanDateTime($modified));
+        $this->modified = DateAndTime::parseToCarbon($modified);
 
         return $this;
     }

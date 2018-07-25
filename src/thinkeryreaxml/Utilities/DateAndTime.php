@@ -9,18 +9,48 @@
 namespace ThinkReaXMLParser\Utilities;
 
 
+use Carbon\Carbon;
+
 class DateAndTime
 {
-    public static function cleanDateTime($datetimestring)
+    const FIXES = [
+        '2009-01-01-12:30:20' => [
+            'match' => '/^\d{4}-\d{2}-\d{2}-\d{2}:\d{2}:\d{2}$/',
+            'replace' => '/(\d{4}-\d{2}-\d{2})(-)(\d{2}:\d{2}:\d{2})/',
+            'replacement' => '$1 $3',
+        ],
+
+        '2009-01-01 12:30' => [
+            'match' => '/^\d{4}-\d{2}-\d{2}[-| ]\d{2}:\d{2}$/',
+            'replace' => '/(\d{4}-\d{2}-\d{2})(-| )(\d{2}:\d{2})/',
+            'replacement' => '$1 $3:00',
+        ],
+    ];
+
+    /**
+     * @param $date_time_string
+     * @return null|string
+     */
+    public static function cleanDateTime($date_time_string)
     {
-        $dash_count = substr_count($datetimestring, '-');
 
-        if ($dash_count == 3) {
-            $parts = explode('-', $datetimestring);
-
-            $datetimestring = $parts[0] . '-' . $parts[1] . '-' . $parts[2] . ' ' . $parts[3];
+        foreach (self::FIXES as $fix) {
+            if (preg_match($fix['match'], $date_time_string))
+                $date_time_string = preg_replace($fix['replace'], $fix['replacement'], $date_time_string);
         }
 
-        return $datetimestring;
+        return $date_time_string;
+
+    }
+
+    /**
+     * @param $date_time_string
+     * @return Carbon
+     */
+    public static function parseToCarbon($date_time_string)
+    {
+
+        return Carbon::parse(self::cleanDateTime($date_time_string));
+
     }
 }

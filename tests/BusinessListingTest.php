@@ -23,6 +23,7 @@ class BusinessListingTest extends PHPUnit_Framework_TestCase
     {
         $parsed = new BusinessListing($this->xml);
 $t = $parsed->getAgent();
+        $this->assertSame('business', $parsed->getType());
         $this->assertSame('ABCD1234', $parsed->getUniqueId());
         $this->assertSame('XNWXNW', $parsed->getAgents()[0]->getAgentID());
         $this->assertSame('sale', $parsed->getSaleType());
