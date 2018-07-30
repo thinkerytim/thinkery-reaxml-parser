@@ -1,4 +1,4 @@
-#Thinkery ReaXML Parser for PHP
+# Thinkery ReaXML Parser for PHP
 
 This is a simple set of classes to parse a ReaXML formatted XML file into usable PHP objects.
 
@@ -7,7 +7,7 @@ ReaXML Feed schema and information from http://reaxml.realestate.com.au/property
 ## Installation
 `composer require thinkerytim/thinkery-reaxml-parser`
 
-##Usage
+## Usage
     require_once('vendor/autoload.php');
     use ThinkReaXMLParser\Parser;
     $parser = new Parser($full_path_to_xml_file);
@@ -22,10 +22,10 @@ ReaXML Feed schema and information from http://reaxml.realestate.com.au/property
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request
 
-##License
+## License
 This software is released under the Apache v2.0 License:
 http://www.apache.org/licenses/LICENSE-2.0
 
-##Copyright
-Copyright (c) 2016 by The Thinkery LLC. All rights reserved.
+## Copyright
+Copyright (c) 2018 by The Thinkery LLC. All rights reserved.
 www.thethinkery.net
